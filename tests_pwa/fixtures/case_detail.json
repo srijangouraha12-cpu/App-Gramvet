@@ -1,0 +1,522 @@
+{
+ "actions": [],
+ "animal_id": 2,
+ "animal_name": "Test animal",
+ "animal_tag": "122",
+ "closed_at": null,
+ "farmer_id": 86,
+ "farmer_name": "Test Farmer",
+ "farmer_phone": "0000000000",
+ "id": 3,
+ "opened_at": "2026-09-29T22:18:52.509944+05:30",
+ "reports": [
+  {
+   "ai_model_version": "GramVet disease classifier (32 inputs, 7 classes, scikit-learn 1.6.1)",
+   "animal_id": 2,
+   "audio_url": null,
+   "case_id": 3,
+   "id": 3,
+   "notes": "",
+   "prediction": {
+    "confidence": 73.4,
+    "connected": true,
+    "escalate": false,
+    "escalation_reason": "Handled by the assigned veterinarian",
+    "message": "AI-assisted screening only. A veterinarian must review and treat the animal before the case can be closed.",
+    "model_inputs": {
+     "Abnormal_Milk_Production": 0,
+     "Abortion_Reproductive_Problem": 0,
+     "Age_Months": 24.0,
+     "Animal_Species": "Cow",
+     "Cough": 0,
+     "Days_Since_Last_Vaccination": 999,
+     "Dehydration": 1,
+     "Diarrhea": 0,
+     "Difficulty_Breathing": 0,
+     "Excessive_Salivation": 0,
+     "Eye_Discharge_Redness": 0,
+     "Fever_High_Body_Temperature": 0,
+     "Herd_Size": 1,
+     "Humidity_Percent": 85.0,
+     "Lameness_Difficulty_Walking": 1,
+     "Mouth_Lesions_Sores": 0,
+     "Nasal_Discharge": 0,
+     "Rainfall_mm": 0.0,
+     "Reduced_Appetite": 1,
+     "Reduced_Rumination": 0,
+     "Season": "Monsoon",
+     "Sex": "Female",
+     "Skin_Lesions_Rash": 0,
+     "Swelling": 0,
+     "Temperature_C": 24.5,
+     "Ticks_External_Parasites": 0,
+     "Vaccinated_BQ": 0,
+     "Vaccinated_FMD": 0,
+     "Vaccinated_HS": 0,
+     "Vaccinated_LSD": 0,
+     "Weakness_Lethargy": 0,
+     "Weight_Loss": 0
+    },
+    "model_version": "GramVet disease classifier (32 inputs, 7 classes, scikit-learn 1.6.1)",
+    "outbreak": {
+     "baseline_cases_28d": 0,
+     "baseline_weekly_rate": 0.0,
+     "disease": "Black Quarter / Blackleg",
+     "evidence": [
+      "1 unique animal affected",
+      "1 different farm affected",
+      "Cases detected within 5 km",
+      "No cases in previous 28 days - new/emerging signal",
+      "Minimum evidence not met (needs 3+ animals on 2+ farms) - kept LOW"
+     ],
+     "farm_spread_score": 0,
+     "growth_ratio": null,
+     "growth_score": 40,
+     "minimum_evidence_met": false,
+     "outbreak_risk_score": 29,
+     "outbreak_status": "LOW",
+     "radius_km": 5.0,
+     "recent_cases_7d": 1,
+     "spatial_score": 33,
+     "temporal_score": 52,
+     "time_window_days": 7,
+     "unique_animals": 1,
+     "unique_farms": 1,
+     "unique_villages": 1,
+     "village": "Dalki",
+     "villages": [
+      {
+       "unique_animals": 1,
+       "unique_farms": 1,
+       "village": "Dalki",
+       "village_id": 200
+      }
+     ]
+    },
+    "outbreak_probability": 0.29,
+    "outbreak_risk_score": 29,
+    "outbreak_status": "LOW",
+    "predicted_disease": "Black Quarter / Blackleg",
+    "predictions": [
+     {
+      "disease": "Black Quarter / Blackleg",
+      "probability": 0.734
+     },
+     {
+      "disease": "FMD",
+      "probability": 0.116
+     },
+     {
+      "disease": "Anthrax",
+      "probability": 0.108
+     },
+     {
+      "disease": "Healthy",
+      "probability": 0.021
+     },
+     {
+      "disease": "Mastitis",
+      "probability": 0.013
+     },
+     {
+      "disease": "Lumpy Skin Disease",
+      "probability": 0.008
+     },
+     {
+      "disease": "Hemorrhagic Septicemia",
+      "probability": 0.001
+     }
+    ],
+    "triage_reasons": [
+     "Black Quarter / Blackleg baseline severity: High"
+    ],
+    "triage_risk": "High",
+    "weather_defaulted": false
+   },
+   "report_inputs": {
+    "age_months": 24.0,
+    "dist_waterbody_km": 1.2,
+    "herd_size": 1.0,
+    "vaccination_flags": {
+     "Days_Since_Last_Vaccination": 999,
+     "Vaccinated_BQ": 0,
+     "Vaccinated_FMD": 0,
+     "Vaccinated_HS": 0,
+     "Vaccinated_LSD": 0
+    },
+    "vaccine_dates": {
+     "BQ": null,
+     "FMD": null,
+     "HS": null,
+     "LSD": null
+    },
+    "vaccine_months": {
+     "BQ": null,
+     "FMD": null,
+     "HS": null,
+     "LSD": null
+    }
+   },
+   "reported_at": "2026-09-29T22:18:52.509944+05:30",
+   "symptoms": [
+    "Reduced Appetite",
+    "Dehydration",
+    "Lameness / Difficulty Walking"
+   ],
+   "weather": {
+    "available": true,
+    "fetched_at": "2026-09-29T22:18:53.263838+05:30",
+    "humidity_pct": 85,
+    "latitude": 0.0,
+    "location_source": "farmer_registered_location",
+    "longitude": 0.0,
+    "rainfall_mm": 0.0,
+    "season": "Monsoon",
+    "source": "open-meteo",
+    "temperature_c": 24.5
+   }
+  },
+  {
+   "ai_model_version": "GramVet disease classifier (32 inputs, 7 classes, scikit-learn 1.6.1)",
+   "animal_id": 2,
+   "audio_url": null,
+   "case_id": 3,
+   "id": 4,
+   "notes": "",
+   "prediction": {
+    "confidence": 73.4,
+    "connected": true,
+    "escalate": false,
+    "escalation_reason": "Handled by the assigned veterinarian",
+    "message": "AI-assisted screening only. A veterinarian must review and treat the animal before the case can be closed.",
+    "model_inputs": {
+     "Abnormal_Milk_Production": 0,
+     "Abortion_Reproductive_Problem": 0,
+     "Age_Months": 24.0,
+     "Animal_Species": "Cow",
+     "Cough": 0,
+     "Days_Since_Last_Vaccination": 999,
+     "Dehydration": 1,
+     "Diarrhea": 0,
+     "Difficulty_Breathing": 0,
+     "Excessive_Salivation": 0,
+     "Eye_Discharge_Redness": 0,
+     "Fever_High_Body_Temperature": 0,
+     "Herd_Size": 1,
+     "Humidity_Percent": 85.0,
+     "Lameness_Difficulty_Walking": 1,
+     "Mouth_Lesions_Sores": 0,
+     "Nasal_Discharge": 0,
+     "Rainfall_mm": 0.0,
+     "Reduced_Appetite": 1,
+     "Reduced_Rumination": 0,
+     "Season": "Monsoon",
+     "Sex": "Female",
+     "Skin_Lesions_Rash": 0,
+     "Swelling": 0,
+     "Temperature_C": 24.5,
+     "Ticks_External_Parasites": 0,
+     "Vaccinated_BQ": 0,
+     "Vaccinated_FMD": 0,
+     "Vaccinated_HS": 0,
+     "Vaccinated_LSD": 0,
+     "Weakness_Lethargy": 0,
+     "Weight_Loss": 0
+    },
+    "model_version": "GramVet disease classifier (32 inputs, 7 classes, scikit-learn 1.6.1)",
+    "outbreak": {
+     "baseline_cases_28d": 0,
+     "baseline_weekly_rate": 0.0,
+     "disease": "Black Quarter / Blackleg",
+     "evidence": [
+      "1 unique animal affected",
+      "1 different farm affected",
+      "Cases detected within 5 km",
+      "No cases in previous 28 days - new/emerging signal",
+      "Minimum evidence not met (needs 3+ animals on 2+ farms) - kept LOW"
+     ],
+     "farm_spread_score": 0,
+     "growth_ratio": null,
+     "growth_score": 40,
+     "minimum_evidence_met": false,
+     "outbreak_risk_score": 29,
+     "outbreak_status": "LOW",
+     "radius_km": 5.0,
+     "recent_cases_7d": 1,
+     "spatial_score": 33,
+     "temporal_score": 52,
+     "time_window_days": 7,
+     "unique_animals": 1,
+     "unique_farms": 1,
+     "unique_villages": 1,
+     "village": "Dalki",
+     "villages": [
+      {
+       "unique_animals": 1,
+       "unique_farms": 1,
+       "village": "Dalki",
+       "village_id": 200
+      }
+     ]
+    },
+    "outbreak_probability": 0.29,
+    "outbreak_risk_score": 29,
+    "outbreak_status": "LOW",
+    "predicted_disease": "Black Quarter / Blackleg",
+    "predictions": [
+     {
+      "disease": "Black Quarter / Blackleg",
+      "probability": 0.734
+     },
+     {
+      "disease": "FMD",
+      "probability": 0.116
+     },
+     {
+      "disease": "Anthrax",
+      "probability": 0.108
+     },
+     {
+      "disease": "Healthy",
+      "probability": 0.021
+     },
+     {
+      "disease": "Mastitis",
+      "probability": 0.013
+     },
+     {
+      "disease": "Lumpy Skin Disease",
+      "probability": 0.008
+     },
+     {
+      "disease": "Hemorrhagic Septicemia",
+      "probability": 0.001
+     }
+    ],
+    "triage_reasons": [
+     "Black Quarter / Blackleg baseline severity: High"
+    ],
+    "triage_risk": "High",
+    "weather_defaulted": false
+   },
+   "report_inputs": {
+    "age_months": 24.0,
+    "dist_waterbody_km": 1.2,
+    "herd_size": 1.0,
+    "vaccination_flags": {
+     "Days_Since_Last_Vaccination": 999,
+     "Vaccinated_BQ": 0,
+     "Vaccinated_FMD": 0,
+     "Vaccinated_HS": 0,
+     "Vaccinated_LSD": 0
+    },
+    "vaccine_dates": {
+     "BQ": null,
+     "FMD": null,
+     "HS": null,
+     "LSD": null
+    },
+    "vaccine_months": {
+     "BQ": null,
+     "FMD": null,
+     "HS": null,
+     "LSD": null
+    }
+   },
+   "reported_at": "2026-09-29T22:18:54.930000+05:30",
+   "symptoms": [
+    "Reduced Appetite",
+    "Dehydration",
+    "Lameness / Difficulty Walking"
+   ],
+   "weather": {
+    "available": true,
+    "fetched_at": "2026-09-29T22:19:03.939787+05:30",
+    "humidity_pct": 85,
+    "latitude": 0.0,
+    "location_source": "farmer_registered_location",
+    "longitude": 0.0,
+    "rainfall_mm": 0.0,
+    "season": "Monsoon",
+    "source": "open-meteo",
+    "temperature_c": 24.5
+   }
+  },
+  {
+   "ai_model_version": "GramVet disease classifier (32 inputs, 7 classes, scikit-learn 1.6.1)",
+   "animal_id": 2,
+   "audio_url": null,
+   "case_id": 3,
+   "id": 6,
+   "notes": "",
+   "prediction": {
+    "confidence": 54.1,
+    "connected": true,
+    "escalate": false,
+    "escalation_reason": "Handled by the assigned veterinarian",
+    "message": "AI-assisted screening only. A veterinarian must review and treat the animal before the case can be closed.",
+    "model_inputs": {
+     "Abnormal_Milk_Production": 0,
+     "Abortion_Reproductive_Problem": 0,
+     "Age_Months": 24.0,
+     "Animal_Species": "Cow",
+     "Cough": 0,
+     "Days_Since_Last_Vaccination": 999,
+     "Dehydration": 0,
+     "Diarrhea": 0,
+     "Difficulty_Breathing": 1,
+     "Excessive_Salivation": 1,
+     "Eye_Discharge_Redness": 0,
+     "Fever_High_Body_Temperature": 0,
+     "Herd_Size": 1,
+     "Humidity_Percent": 85.0,
+     "Lameness_Difficulty_Walking": 0,
+     "Mouth_Lesions_Sores": 0,
+     "Nasal_Discharge": 0,
+     "Rainfall_mm": 0.0,
+     "Reduced_Appetite": 1,
+     "Reduced_Rumination": 0,
+     "Season": "Monsoon",
+     "Sex": "Female",
+     "Skin_Lesions_Rash": 0,
+     "Swelling": 0,
+     "Temperature_C": 24.5,
+     "Ticks_External_Parasites": 0,
+     "Vaccinated_BQ": 0,
+     "Vaccinated_FMD": 0,
+     "Vaccinated_HS": 0,
+     "Vaccinated_LSD": 0,
+     "Weakness_Lethargy": 0,
+     "Weight_Loss": 0
+    },
+    "model_version": "GramVet disease classifier (32 inputs, 7 classes, scikit-learn 1.6.1)",
+    "outbreak": {
+     "baseline_cases_28d": 0,
+     "baseline_weekly_rate": 0.0,
+     "disease": "Hemorrhagic Septicemia",
+     "evidence": [
+      "1 unique animal affected",
+      "1 different farm affected",
+      "Cases detected within 5 km",
+      "No cases in previous 28 days - new/emerging signal",
+      "Minimum evidence not met (needs 3+ animals on 2+ farms) - kept LOW"
+     ],
+     "farm_spread_score": 0,
+     "growth_ratio": null,
+     "growth_score": 40,
+     "minimum_evidence_met": false,
+     "outbreak_risk_score": 29,
+     "outbreak_status": "LOW",
+     "radius_km": 5.0,
+     "recent_cases_7d": 1,
+     "spatial_score": 33,
+     "temporal_score": 52,
+     "time_window_days": 7,
+     "unique_animals": 1,
+     "unique_farms": 1,
+     "unique_villages": 1,
+     "village": "Dalki",
+     "villages": [
+      {
+       "unique_animals": 1,
+       "unique_farms": 1,
+       "village": "Dalki",
+       "village_id": 200
+      }
+     ]
+    },
+    "outbreak_probability": 0.29,
+    "outbreak_risk_score": 29,
+    "outbreak_status": "LOW",
+    "predicted_disease": "Hemorrhagic Septicemia",
+    "predictions": [
+     {
+      "disease": "Hemorrhagic Septicemia",
+      "probability": 0.541
+     },
+     {
+      "disease": "Anthrax",
+      "probability": 0.248
+     },
+     {
+      "disease": "FMD",
+      "probability": 0.161
+     },
+     {
+      "disease": "Black Quarter / Blackleg",
+      "probability": 0.03
+     },
+     {
+      "disease": "Lumpy Skin Disease",
+      "probability": 0.014
+     },
+     {
+      "disease": "Healthy",
+      "probability": 0.005
+     },
+     {
+      "disease": "Mastitis",
+      "probability": 0.0
+     }
+    ],
+    "triage_reasons": [
+     "Hemorrhagic Septicemia baseline severity: High"
+    ],
+    "triage_risk": "High",
+    "weather_defaulted": false
+   },
+   "report_inputs": {
+    "age_months": 24.0,
+    "dist_waterbody_km": 1.2,
+    "herd_size": 1.0,
+    "vaccination_flags": {
+     "Days_Since_Last_Vaccination": 999,
+     "Vaccinated_BQ": 0,
+     "Vaccinated_FMD": 0,
+     "Vaccinated_HS": 0,
+     "Vaccinated_LSD": 0
+    },
+    "vaccine_dates": {
+     "BQ": null,
+     "FMD": null,
+     "HS": null,
+     "LSD": null
+    },
+    "vaccine_months": {
+     "BQ": null,
+     "FMD": null,
+     "HS": null,
+     "LSD": null
+    }
+   },
+   "reported_at": "2026-09-29T22:22:37.332000+05:30",
+   "symptoms": [
+    "Difficulty Breathing",
+    "Reduced Appetite",
+    "Excessive Salivation"
+   ],
+   "weather": {
+    "available": true,
+    "fetched_at": "2026-09-29T22:22:44.323768+05:30",
+    "humidity_pct": 85,
+    "latitude": 0.0,
+    "location_source": "farmer_registered_location",
+    "longitude": 0.0,
+    "rainfall_mm": 0.0,
+    "season": "Monsoon",
+    "source": "open-meteo",
+    "temperature_c": 24.5
+   }
+  }
+ ],
+ "species": "Cattle",
+ "status": "OPEN",
+ "vaccinations": [],
+ "vet_address": "Test address",
+ "vet_distance_km": null,
+ "vet_id": 2,
+ "vet_name": "Test Vet",
+ "vet_phone": "1111111111",
+ "village_id": 200,
+ "village_name": "Dalki"
+}

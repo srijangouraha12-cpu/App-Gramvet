@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GramVet · Phone check</title>
+<style>
+  body{font:15px/1.45 system-ui,sans-serif;margin:0;padding:14px;background:#f3f6f4;color:#17301f}
+  h1{font-size:20px;margin:0 0 4px} p.sub{margin:0 0 14px;color:#5b6f62}
+  .card{background:#fff;border:1px solid #dfe8e2;border-radius:14px;padding:12px 14px;margin:10px 0}
+  .card h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#5b6f62;margin:0 0 6px}
+  .row{display:flex;gap:10px;padding:6px 0;border-top:1px solid #edf2ee}.row:first-of-type{border-top:0}
+  .mark{width:22px;flex:none;text-align:center;font-weight:800}.ok{color:#1f8f4f}.warn{color:#c47f00}.bad{color:#d12f2f}
+  .label{flex:1}.val{color:#5b6f62;font-size:13px;word-break:break-word}.hint{display:block;color:#8a5a00;font-size:13px;margin-top:2px}
+  button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 14px;background:#16734b;color:#fff;min-height:44px;margin:4px 6px 4px 0}
+  button.secondary{background:#e6efe9;color:#16734b}
+  textarea{width:100%;height:120px;font:12px monospace;border:1px solid #dfe8e2;border-radius:10px;padding:8px;box-sizing:border-box}
+</style>
+</head>
+<body>
+<h1>Phone check</h1>
+<p class="sub">Shows what works on this phone and, when something does not, why. Nothing here is sent anywhere.</p>
+<div id="out"><div class="card">Checking…</div></div>
+<button id="copy">Copy this report</button><button class="secondary" id="persist">Ask the phone to keep saved data</button><button class="secondary" id="again">Check again</button>
+<textarea id="report" readonly aria-label="Report text" hidden></textarea>
+<script src="/static/pwa/db.js"></script>
+<script src="/static/pwa/outbox.js"></script>
+<script>
+(function () {
+  var lines = [];
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function section(title) { var c = el("div", "card"); c.appendChild(el("h2", null, title)); lines.push("", "== " + title); return c; }
+  // status: ok | warn | bad | "" (information only)
+  function row(card, status, label, value, hint) {
+    var r = el("div", "row"); r.appendChild(el("div", "mark " + status, status === "ok" ? "✓" : status === "warn" ? "!" : status === "bad" ? "✗" : "·"));
+    var b = el("div", "label"); b.appendChild(el("div", null, label)); if (value != null && value !== "") b.appendChild(el("div", "val", String(value))); if (hint) b.appendChild(el("span", "hint", hint));
+    r.appendChild(b); card.appendChild(r);
+    lines.push((status ? "[" + status.toUpperCase() + "] " : "      ") + label + (value != null && value !== "" ? ": " + value : "") + (hint ? "  (" + hint + ")" : ""));
+  }
+  function mb(n) { return (n / 1048576).toFixed(1) + " MB"; }
+
+  async function run() {
+    lines = ["GramVet phone check  " + new Date().toISOString(), location.origin];
+    var out = document.getElementById("out"); out.textContent = "";
+    var c, nav = navigator;
+
+    c = section("This page");
+    row(c, isSecureContext ? "ok" : "bad", "Secure connection (HTTPS or localhost)", isSecureContext ? "yes" : "no",
+      isSecureContext ? "" : "Without HTTPS the phone will not run the offline service, the microphone, or persistent storage. Open the app over https://.");
+    row(c, nav.onLine ? "ok" : "warn", "Phone says it is online", nav.onLine ? "yes" : "no");
+    var cn = nav.connection; if (cn) row(c, cn.saveData ? "warn" : "", "Connection", (cn.effectiveType || "?") + ", about " + (cn.downlink || "?") + " Mbit/s, round trip " + (cn.rtt || "?") + " ms" + (cn.saveData ? ", Data Saver is ON" : ""));
+    out.appendChild(c);
+
+    c = section("Offline service (service worker)");
+    var reg = null; try { reg = "serviceWorker" in nav ? await nav.serviceWorker.getRegistration() : null; } catch (e) {}
+    row(c, "serviceWorker" in nav ? "ok" : "bad", "Supported by this browser", "serviceWorker" in nav ? "yes" : "no");
+    row(c, reg && reg.active ? "ok" : "bad", "Installed and active", reg ? (reg.active ? reg.active.state : (reg.installing ? "installing" : "waiting")) : "not registered",
+      reg && reg.active ? "" : "Open the app once with a connection and wait a few seconds.");
+    row(c, nav.serviceWorker && nav.serviceWorker.controller ? "ok" : "warn", "Controlling this page", nav.serviceWorker && nav.serviceWorker.controller ? "yes" : "no", nav.serviceWorker && nav.serviceWorker.controller ? "" : "Reload the page once.");
+    try {
+      var names = await caches.keys(), parts = [];
+      for (var i = 0; i < names.length; i++) parts.push(names[i] + " (" + (await (await caches.open(names[i])).keys()).length + ")");
+      row(c, names.some(function (n) { return /-shell$/.test(n); }) ? "ok" : "warn", "Saved copies", parts.join(", ") || "none");
+    } catch (e) { row(c, "warn", "Saved copies", "cannot read: " + e.message); }
+    row(c, "SyncManager" in window ? "ok" : "warn", "Background sync (sends reports with the app closed)", "SyncManager" in window ? "available" : "not available",
+      "SyncManager" in window ? "" : "Reports still send automatically, but only while the app is open (normal on iPhone).");
+    row(c, nav.locks ? "ok" : "warn", "Web Locks (stops two copies syncing at once)", nav.locks ? "available" : "not available");
+    out.appendChild(c);
+
+    c = section("Storage");
+    try {
+      var est = await nav.storage.estimate(); row(c, "", "Used / available", mb(est.usage) + " of " + mb(est.quota));
+      var pers = nav.storage.persisted ? await nav.storage.persisted() : false;
+      row(c, pers ? "ok" : "warn", "Saved data protected from clean-up", pers ? "yes" : "no", pers ? "" : "The phone may delete unsent reports if it runs low on space. Tap 'Ask the phone to keep saved data'.");
+    } catch (e) { row(c, "warn", "Storage", "cannot read: " + e.message); }
+    row(c, window.indexedDB ? "ok" : "bad", "Database for unsent reports (IndexedDB)", window.indexedDB ? "available" : "missing");
+    out.appendChild(c);
+
+    c = section("Unsent reports");
+    try {
+      var items = await gvsync.list(), pend = items.filter(function (x) { return x.status !== "failed"; }), fail = items.filter(function (x) { return x.status === "failed"; });
+      row(c, fail.length ? "bad" : pend.length ? "warn" : "ok", "Waiting / failed", pend.length + " waiting, " + fail.length + " failed");
+      items.slice(0, 10).forEach(function (x) {
+        var age = x.createdAt ? Math.round((Date.now() - new Date(x.createdAt)) / 60000) + " min ago" : "";
+        row(c, x.status === "failed" ? "bad" : "", x.method + " " + x.url, [x.status, "tries " + (x.attempts || 0), age, x.key ? "key ok" : "NO KEY", x.httpStatus ? "HTTP " + x.httpStatus : "", x.error || ""].filter(Boolean).join(" · "));
+      });
+    } catch (e) { row(c, "warn", "Unsent reports", "cannot read: " + e.message); }
+    out.appendChild(c);
+
+    c = section("Recording and voice");
+    row(c, window.MediaRecorder ? "ok" : "warn", "Voice recording (MediaRecorder)", window.MediaRecorder ? "available" : "not available");
+    row(c, nav.mediaDevices && nav.mediaDevices.getUserMedia ? "ok" : "warn", "Microphone access", nav.mediaDevices && nav.mediaDevices.getUserMedia ? "available" : "not available", isSecureContext ? "" : "Needs HTTPS.");
+    row(c, window.SpeechRecognition || window.webkitSpeechRecognition ? "ok" : "", "Live speech-to-text (online only)", window.SpeechRecognition || window.webkitSpeechRecognition ? "available" : "not available");
+    out.appendChild(c);
+
+    c = section("Server");
+    // /api/sync is not cached by the offline service, so a reply (even an error) proves the server really answered.
+    var ping = null;
+    try {
+      var t0 = performance.now(); ping = await fetch("/api/sync", { cache: "no-store" });
+      row(c, "ok", "Reached the server", Math.round(performance.now() - t0) + " ms");
+    } catch (e) { row(c, nav.onLine ? "bad" : "warn", "Reached the server", "no (" + e.message + ")", nav.onLine ? "" : "Expected while offline."); }
+    try {
+      var r = await fetch("/api/me"), j = await r.json();
+      row(c, j.authenticated ? "ok" : "warn", ping ? "Signed in" : "Signed in (last known, the server did not answer)", j.authenticated ? "as " + j.user.role + " (id " + j.user.id + ")" : "no", j.authenticated ? "" : "Sign in in the app first.");
+    } catch (e) { row(c, "warn", "Signed in", "unknown"); }
+    var sd = ping && ping.headers.get("Date");
+    if (sd) {
+      var skew = Math.round((Date.now() - new Date(sd).getTime()) / 1000), ab = Math.abs(skew);
+      row(c, ab > 300 && skew > 0 ? "bad" : ab > 120 ? "warn" : "ok", "Phone clock vs server clock", (skew >= 0 ? "phone is " + skew + " s ahead" : "phone is " + (-skew) + " s behind"),
+        ab > 120 ? "The server replaces times recorded offline that are more than 5 minutes in the future. Set the phone to automatic date and time." : "");
+    }
+    try { var w = JSON.parse(localStorage.getItem("gv_warm") || "null"); row(c, "", "Last offline-data download", w ? Math.round((Date.now() - w.t) / 60000) + " min ago" : "never"); } catch (e) {}
+    out.appendChild(c);
+
+    c = section("This phone");
+    row(c, "", "Screen / window", screen.width + "x" + screen.height + " / " + innerWidth + "x" + innerHeight + " @" + devicePixelRatio + "x");
+    row(c, "", "Language / time zone", nav.language + " / " + (Intl.DateTimeFormat().resolvedOptions().timeZone || "?"));
+    row(c, "", "Browser", nav.userAgent);
+    out.appendChild(c);
+    document.getElementById("report").value = lines.join("\n");
+  }
+
+  document.getElementById("again").onclick = run;
+  document.getElementById("persist").onclick = async function () {
+    try { var ok = await navigator.storage.persist(); alert(ok ? "Done: the phone will keep saved data." : "The phone did not agree. Installing the app to the home screen usually helps."); } catch (e) { alert("Not possible here: " + e.message); }
+    run();
+  };
+  document.getElementById("copy").onclick = async function () {
+    var ta = document.getElementById("report"); ta.hidden = false; ta.select();
+    try { await navigator.clipboard.writeText(ta.value); alert("Copied. Paste it into a message."); } catch (e) { try { document.execCommand("copy"); alert("Copied. Paste it into a message."); } catch (x) { alert("Select the text below and copy it."); } }
+  };
+  run();
+})();
+</script>
+</body>
+</html>
